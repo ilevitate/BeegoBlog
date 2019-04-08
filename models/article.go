@@ -23,7 +23,7 @@ func (this *Article) ArticleCount() (count int64) {
 
 	count, err := o.QueryTable(this).Count()
 	if err != nil {
-		log.Println("获取栏目总数出错：" + err.Error())
+		log.Println("获取文章总数出错：" + err.Error())
 	}
 	return count
 }
