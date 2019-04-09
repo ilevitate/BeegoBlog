@@ -1,11 +1,11 @@
 package controllers
 
 import (
-	"log"
 	"BeegoBlog/models"
-	"time"
-	"strconv"
 	"github.com/astaxie/beego"
+	"log"
+	"strconv"
+	"time"
 )
 
 type CommentController struct {
@@ -17,16 +17,16 @@ func (c *CommentController) Store() {
 	query.UserName = c.GetString("user_name")
 	query.Content = c.GetString("content")
 	query.Created = time.Now()
-	article_id, _ := c.GetInt64("article_id")
+	articleId, _ := c.GetInt64("article_id")
 	query.Article = &models.Article{
-		Id: article_id,
+		Id: articleId,
 	}
 
 	err := query.Create(&query)
 	if err != nil {
 		log.Println("达标评论出错：" + err.Error())
 	}
-	id := strconv.Itoa(int(article_id))
+	id := strconv.Itoa(int(articleId))
 	c.Ctx.Redirect(302, "/article/"+id)
 }
 

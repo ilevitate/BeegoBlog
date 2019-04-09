@@ -15,7 +15,7 @@ type Category struct {
 
 func (this *Category) CategoryCount() (count int64) {
 	o := orm.NewOrm()
-	o.Using("default")
+	_ = o.Using("default")
 
 	count, err := o.QueryTable(this).Count()
 	if err != nil {
@@ -26,7 +26,7 @@ func (this *Category) CategoryCount() (count int64) {
 
 func (this *Category) GetOne(id int64) (result Category, err error) {
 	o := orm.NewOrm()
-	o.Using("default")
+	_ = o.Using("default")
 
 	result = Category{Id: id}
 	err = o.Read(&result)
@@ -36,10 +36,9 @@ func (this *Category) GetOne(id int64) (result Category, err error) {
 	return result, nil
 }
 
-
 func (this *Category) GetAll() (result []Category) {
 	o := orm.NewOrm()
-	o.Using("default")
+	_ = o.Using("default")
 
 	_, err := o.QueryTable(this).All(&result, "id", "title")
 	if err != nil {
@@ -50,7 +49,7 @@ func (this *Category) GetAll() (result []Category) {
 
 func (this *Category) Create(query *Category) error {
 	o := orm.NewOrm()
-	o.Using("default")
+	_ = o.Using("default")
 
 	_, err := o.Insert(query)
 	if err != nil {
@@ -61,7 +60,7 @@ func (this *Category) Create(query *Category) error {
 
 func (this *Category) Update(query *Category) error {
 	o := orm.NewOrm()
-	o.Using("default")
+	_ = o.Using("default")
 
 	_, err := o.Update(query)
 	if err != nil {
@@ -73,7 +72,7 @@ func (this *Category) Update(query *Category) error {
 
 func (this *Category) Delete(id int64) error {
 	o := orm.NewOrm()
-	o.Using("default")
+	_ = o.Using("default")
 
 	this.Id = id
 	_, err := o.Delete(this)

@@ -2,11 +2,11 @@ package controllers
 
 import (
 	"BeegoBlog/models"
+	"github.com/astaxie/beego/orm"
 	"html/template"
-	"time"
 	"log"
 	"strconv"
-	"github.com/astaxie/beego/orm"
+	"time"
 )
 
 type ArticleController struct {
@@ -28,9 +28,9 @@ func (c *ArticleController) Store() {
 	query.UserName = c.GetString("user_name")
 	query.Content = c.GetString("content")
 	query.Created = time.Now()
-	caregory_id, _ := c.GetInt64("category_id")
+	categoryId, _ := c.GetInt64("category_id")
 	query.Category = &models.Category{
-		Id: caregory_id,
+		Id: categoryId,
 	}
 
 	err := query.Create(&query)
@@ -42,27 +42,29 @@ func (c *ArticleController) Store() {
 
 }
 
+func (c *ArticleController) Show() {
 
-func (c *ArticleController) Show(){
-
-	id, err:= c.GetInt64(":id")
+	id, err := c.GetInt64(":id")
 	if err != nil {
 		log.Println("获取ID失败：" + err.Error())
 	}
 	var article models.Article
-	article ,err = article.GetOne(id)
+	article, err = article.GetOne(id)
 	if err != nil {
 		log.Println("查询文章出错:" + err.Error())
 	}
 
 	//浏览量+1
 	o := orm.NewOrm()
-	o.Using("default")
-	o.Raw("UPDATE `article` SET `view` = `view` + 1 WHERE `id` = ?",id).Exec()
+	_ = o.Using("default")
+	_, err = o.Raw("UPDATE `article` SET `view` = `view` + 1 WHERE `id` = ?", id).Exec()
+	if err != nil {
+		log.Println("更新文章浏览量出错:" + err.Error())
+	}
 	//赋值
 	c.Data["Article"] = article
 
-	//定义评论模型获取文章的所有李评论
+	//定义评论模型获取文章的所有评论
 	var comment models.Comment
 	comments := comment.GetAll(id)
 	c.Data["Comments"] = comments
@@ -74,7 +76,6 @@ func (c *ArticleController) Show(){
 	c.Layout = "layout.html"
 	c.TplName = "show.html"
 }
-
 
 func (c *ArticleController) Delete() {
 	id, err := c.GetInt64(":id")
@@ -89,16 +90,15 @@ func (c *ArticleController) Delete() {
 	c.Ctx.Redirect(302, "/")
 }
 
-
-func (c *ArticleController) Edit(){
+func (c *ArticleController) Edit() {
 	//调用BaseController获取栏目列表，栏目总数、文章总数等右边栏数据
 	c.SideBar()
-	id, err:= c.GetInt64(":id")
+	id, err := c.GetInt64(":id")
 	if err != nil {
 		log.Println("获取ID失败：" + err.Error())
 	}
 	var article models.Article
-	article ,err = article.GetOne(id)
+	article, err = article.GetOne(id)
 	if err != nil {
 		log.Println("查询文章出错:" + err.Error())
 	}

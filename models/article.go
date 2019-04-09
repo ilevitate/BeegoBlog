@@ -1,14 +1,14 @@
 package models
 
 import (
-	"time"
 	"github.com/astaxie/beego/orm"
 	"log"
+	"time"
 )
 
 type Article struct {
 	Id       int64
-	Category *Category  `orm:"rel(fk)"`
+	Category *Category `orm:"rel(fk)"`
 	UserName string
 	Title    string
 	Content  string     `orm:"size(1000)"`
@@ -19,7 +19,7 @@ type Article struct {
 
 func (this *Article) ArticleCount() (count int64) {
 	o := orm.NewOrm()
-	o.Using("default")
+	_ = o.Using("default")
 
 	count, err := o.QueryTable(this).Count()
 	if err != nil {
@@ -30,7 +30,7 @@ func (this *Article) ArticleCount() (count int64) {
 
 func (this *Article) Create(query *Article) error {
 	o := orm.NewOrm()
-	o.Using("default")
+	_ = o.Using("default")
 
 	_, err := o.Insert(query)
 	if err != nil {
@@ -41,7 +41,7 @@ func (this *Article) Create(query *Article) error {
 
 func (this *Article) GetOne(id int64) (result Article, err error) {
 	o := orm.NewOrm()
-	o.Using("default")
+	_ = o.Using("default")
 
 	result = Article{Id: id}
 	err = o.Read(&result)
@@ -53,7 +53,7 @@ func (this *Article) GetOne(id int64) (result Article, err error) {
 
 func (this *Article) GetAll() (result []Article) {
 	o := orm.NewOrm()
-	o.Using("default")
+	_ = o.Using("default")
 
 	_, err := o.QueryTable(this).OrderBy("-created").All(&result)
 	if err != nil {
@@ -64,7 +64,7 @@ func (this *Article) GetAll() (result []Article) {
 
 func (this *Article) Update(query *Category) error {
 	o := orm.NewOrm()
-	o.Using("default")
+	_ = o.Using("default")
 
 	_, err := o.Update(query)
 	if err != nil {
@@ -76,7 +76,7 @@ func (this *Article) Update(query *Category) error {
 
 func (this *Article) Delete(id int64) error {
 	o := orm.NewOrm()
-	o.Using("default")
+	_ = o.Using("default")
 
 	this.Id = id
 	_, err := o.Delete(this)
@@ -88,7 +88,7 @@ func (this *Article) Delete(id int64) error {
 
 func (this *Article) GetNew() (result []Article) {
 	o := orm.NewOrm()
-	o.Using("default")
+	_ = o.Using("default")
 
 	_, err := o.QueryTable(this).OrderBy("-created").Limit(5).All(&result)
 	if err != nil {

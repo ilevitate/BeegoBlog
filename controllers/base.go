@@ -1,15 +1,15 @@
 package controllers
 
 import (
-	"github.com/astaxie/beego"
 	"BeegoBlog/models"
+	"github.com/astaxie/beego"
 )
 
 type BaseController struct {
 	beego.Controller
 }
 
-func (this *BaseController) SideBar()  {
+func (this *BaseController) SideBar() {
 	//定义栏目模型
 	var category models.Category
 	//栏目总数
@@ -33,5 +33,3 @@ func (this *BaseController) SideBar()  {
 	commentCount := comment.CommentCount()
 	this.Data["CommentCount"] = commentCount
 }
-
-

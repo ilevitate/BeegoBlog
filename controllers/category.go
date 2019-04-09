@@ -1,10 +1,10 @@
 package controllers
 
 import (
-	"github.com/astaxie/beego"
 	"BeegoBlog/models"
-	"time"
+	"github.com/astaxie/beego"
 	"log"
+	"time"
 )
 
 type CategoryController struct {

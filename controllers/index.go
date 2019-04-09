@@ -18,7 +18,6 @@ func (c *IndexController) Index() {
 	articles := article.GetAll()
 	c.Data["Articles"] = articles
 
-
 	c.Data["XsrfData"] = template.HTML(c.XSRFFormHTML())
 	c.Layout = "layout.html"
 	c.TplName = "index.html"
